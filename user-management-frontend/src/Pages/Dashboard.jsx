@@ -2,6 +2,7 @@ import React,{useEffect,useState} from 'react'
 import { Route,Navigate } from 'react-router-dom';
 import Auth from '../Services/Auth';
 import axios from 'axios';
+import User from '../Components/User';
 const Dashboard = () => {
     
     const [allUsers,setAllUsers] = useState([]);
@@ -123,26 +124,19 @@ const Dashboard = () => {
                                     </thead>
                                     <tbody>
                                         {loading ? <tr><td colSpan="4" className="text-center">Loading...</td></tr> : currentPageData.map(user => {
-                                            return <tr key={user._id}>
+                                            return <tr key={user.id}>
                                                 <td>{user.fullName}</td>
                                                 <td>{user.email}</td>
                                                 <td>
-                                                    <button className="btn btn-primary" onClick={() => {
-                                                        setLoading(true);
-                                                        axios.get(`http://localhost:1337/user/${user._id}`)
-                                                        .then(res => {
-                                                            setAllUsers(allUsers.filter(u => u._id !== user._id));
-                                                            setLoading(false);
-                                                            // setSuccess('User deleted successfully');
-                                                        }
-                                                        )
-                                                        .catch(err => {
-                                                            setError(err.message);
-                                                            setLoading(false);
-                                                        }
-                                                        )
-                                                    }
-                                                    }>View</button>
+                                                    <User 
+                                                        data={user}
+                                                        allUsers={allUsers}
+                                                        setAllUsers={setAllUsers}
+                                                        tempUsers={tempUsers}
+                                                        setTempUsers={setTempUsers}
+                                                        currentPageData={currentPageData}
+                                                        setCurrentPageData={setCurrentPageData}
+                                                    />
                                                 </td>
                                             </tr>
                                         }
